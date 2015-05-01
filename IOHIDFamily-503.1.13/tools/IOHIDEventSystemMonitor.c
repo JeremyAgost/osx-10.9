@@ -28,9 +28,9 @@ void IOHIDServiceClientRegisterRemovalCallback(IOHIDServiceClientRef, IOHIDServi
 CFTypeRef IOHIDServiceClientCopyProperty(IOHIDServiceClientRef, CFStringRef);
 void IOHIDServiceClientSetProperty(IOHIDServiceClientRef, CFStringRef, CFTypeRef);
 
-#define kIOHIDServicePrimaryUsagePageKey ""
-#define kIOHIDServicePrimaryUsageKey ""
-#define kIOHIDServiceReportIntervalKey ""
+#define kIOHIDServicePrimaryUsagePageKey	"PrimaryUsagePage"
+#define kIOHIDServicePrimaryUsageKey		"PrimaryUsage"
+#define kIOHIDServiceReportIntervalKey		"ReportInterval"
 
 typedef void * IOHIDNotificationRef;
 
@@ -43,8 +43,40 @@ void IOHIDEventSetSenderID(IOHIDEventRef, uint64_t);
 
 typedef enum {
 
-	kIOHIDEventTypeNULL,
-	kIOHIDEventTypeCount,
+	kIOHIDEventTypeNULL = 0x00,
+	kIOHIDEventTypeVendorDefined = 0x01,
+	kIOHIDEventTypeButton = 0x02,
+	kIOHIDEventTypeKeyboard = 0x03,
+	kIOHIDEventTypeTranslation = 0x04,
+	kIOHIDEventTypeRotation = 0x05,
+	kIOHIDEventTypeScroll = 0x06,
+	kIOHIDEventTypeScale = 0x07,
+	kIOHIDEventTypeZoom = 0x08,
+	kIOHIDEventTypeVelocity = 0x09,
+	kIOHIDEventTypeOrientation = 0x0a,
+	kIOHIDEventTypeDigitizer = 0x0b,
+	kIOHIDEventTypeAmbientLightSensor = 0x0c,
+	kIOHIDEventTypeAccelerometer = 0x0d,
+	kIOHIDEventTypeProximity = 0x0e,
+	kIOHIDEventTypeTemperature = 0x0f,
+	kIOHIDEventTypeNavigationalSwipe = 0x10,
+	kIOHIDEventTypePointer = 0x11,
+	kIOHIDEventTypeProgresss = 0x12,
+	kIOHIDEventTypeMultiAxisPointer = 0x13,
+	kIOHIDEventTypeGyro = 0x14,
+	kIOHIDEventTypeCompass = 0x15,
+	kIOHIDEventTypeZoomToggle = 0x16,
+	kIOHIDEventTypeDockSwipe = 0x17,
+	kIOHIDEventTypeSymbolicHotKey = 0x18,
+	kIOHIDEventTypePower = 0x19,
+	kIOHIDEventTypeUnknown = 0x1a,
+	kIOHIDEventTypeFluidTouchGesture = 0x1b,
+	kIOHIDEventTypeBoundaryScroll = 0x1c,
+	kIOHIDEventTypeBiometric = 0x1d,
+	kIOHIDEventTypeUnicode = 0x1e,
+	kIOHIDEventTypeAtmosphericPressure = 0x1f,
+
+	kIOHIDEventTypeCount = 0x20,
 
 } IOHIDEventType;
 
@@ -59,9 +91,12 @@ typedef void * IOHIDEventSystemClientRef;
 
 typedef enum {
 
-	kIOHIDEventSystemClientTypeMonitor,
-	kIOHIDEventSystemClientTypeRateControlled,
-	kIOHIDEventSystemClientTypeAdmin,
+	kIOHIDEventSystemClientTypeAdmin = 0x0,
+	kIOHIDEventSystemClientTypeMonitor = 0x1,
+	kIOHIDEventSystemClientTypePassive = 0x2,
+	kIOHIDEventSystemClientTypeRateControlled = 0x3,
+
+	kIOHIDEventSystemClientTypeCount,
 
 } IOHIDEventSystemClientType;
 
