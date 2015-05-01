@@ -11,12 +11,90 @@
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #include <CoreFoundation/CoreFoundation.h>
-#include <IOKit/hid/IOHIDEventSystemClientPrivate.h>
-#include <IOKit/hid/IOHIDServiceClient.h>
-#include <IOKit/hid/IOHIDEventSystem.h>
-#include <IOKit/hid/IOHIDService.h>
-#include <IOKit/hid/IOHIDNotification.h>
+//#include <IOKit/hid/IOHIDEventSystemClientPrivate.h>
+//#include <IOKit/hid/IOHIDServiceClient.h>
+//#include <IOKit/hid/IOHIDEventSystem.h>
+//#include <IOKit/hid/IOHIDService.h>
+//#include <IOKit/hid/IOHIDNotification.h>
 #include <IOKit/hid/IOHIDKeys.h>
+
+typedef void * IOHIDServiceRef;
+
+typedef void * IOHIDServiceClientRef;
+typedef void(*IOHIDServicesAddedCallback)(void *, void *, void *, CFArrayRef);
+typedef void(*IOHIDServicesRemovedCallback)(void *, void *, IOHIDServiceClientRef);
+
+void IOHIDServiceClientRegisterRemovalCallback(IOHIDServiceClientRef, IOHIDServicesRemovedCallback, void *, const char *);
+CFTypeRef IOHIDServiceClientCopyProperty(IOHIDServiceClientRef, CFStringRef);
+void IOHIDServiceClientSetProperty(IOHIDServiceClientRef, CFStringRef, CFTypeRef);
+
+#define kIOHIDServicePrimaryUsagePageKey ""
+#define kIOHIDServicePrimaryUsageKey ""
+#define kIOHIDServiceReportIntervalKey ""
+
+typedef void * IOHIDNotificationRef;
+
+IOHIDNotificationRef IOHIDServiceCreateRemovalNotification(IOHIDServiceRef, IOHIDServicesRemovedCallback, void *, void *);
+
+typedef void * IOHIDEventRef;
+
+IOHIDEventRef IOHIDEventCreate(CFAllocatorRef, uint32_t, uint64_t, int);
+void IOHIDEventSetSenderID(IOHIDEventRef, uint64_t);
+
+typedef enum {
+
+	kIOHIDEventTypeNULL,
+	kIOHIDEventTypeCount,
+
+} IOHIDEventType;
+
+IOHIDEventType IOHIDEventGetType(IOHIDEventRef);
+uint64_t IOHIDEventGetLatency(IOHIDEventRef, int);
+char * IOHIDEventGetTypeString(IOHIDEventType);
+CFStringRef IOHIDEventTypeGetName(IOHIDEventType);
+
+typedef boolean_t(*IOHIDEventCallback)(void *, void *, void *, IOHIDEventRef);
+
+typedef void * IOHIDEventSystemClientRef;
+
+typedef enum {
+
+	kIOHIDEventSystemClientTypeMonitor,
+	kIOHIDEventSystemClientTypeRateControlled,
+	kIOHIDEventSystemClientTypeAdmin,
+
+} IOHIDEventSystemClientType;
+
+IOHIDEventSystemClientRef IOHIDEventSystemClientCreateWithType(CFAllocatorRef, IOHIDEventSystemClientType, void *);
+void IOHIDEventSystemClientScheduleWithRunLoop(IOHIDEventSystemClientRef, CFRunLoopRef, CFStringRef);
+void IOHIDEventSystemClientDispatchEvent(IOHIDEventSystemClientRef, IOHIDEventRef);
+void IOHIDEventSystemClientRegisterEventCallback(IOHIDEventSystemClientRef, IOHIDEventCallback, void *, void *);
+void IOHIDEventSystemClientRegisterDeviceMatchingCallback(IOHIDEventSystemClientRef, IOHIDServicesRemovedCallback, void *, const char *);
+char * IOHIDEventSystemClientGetTypeString(IOHIDEventSystemClientType);
+CFArrayRef _IOHIDEventSystemClientCopyClientDescriptions(IOHIDEventSystemClientRef, IOHIDEventSystemClientType);
+CFArrayRef _IOHIDEventSystemClientCopyServiceDescriptions(IOHIDEventSystemClientRef);
+
+typedef void * IOHIDEventSystemRef;
+
+IOHIDEventSystemRef IOHIDEventSystemCreate(CFAllocatorRef);
+void IOHIDEventSystemOpen(IOHIDEventSystemRef, IOHIDEventCallback, void *, void *, int);
+CFArrayRef IOHIDEventSystemCopyMatchingServices(IOHIDEventSystemRef, void *, IOHIDServicesAddedCallback, void *, void *, IOHIDNotificationRef *);
+
+
+CFArrayRef _IOHIDEventSystemClientCopyClientDescriptions(IOHIDEventSystemClientRef a, IOHIDEventSystemClientType b)
+{
+	return CFArrayCreate(NULL, NULL, 0, NULL);
+}
+
+CFArrayRef _IOHIDEventSystemClientCopyServiceDescriptions(IOHIDEventSystemClientRef a)
+{
+	return CFArrayCreate(NULL, NULL, 0, NULL);
+}
+
+
+
+
+
 
 static const char kServiceAdded[] = "ADDED";
 static const char kServiceRemoved[] = "REMOVED";
