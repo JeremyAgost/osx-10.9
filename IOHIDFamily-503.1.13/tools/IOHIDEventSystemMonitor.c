@@ -106,6 +106,7 @@ void IOHIDEventSystemClientDispatchEvent(IOHIDEventSystemClientRef, IOHIDEventRe
 void IOHIDEventSystemClientRegisterEventCallback(IOHIDEventSystemClientRef, IOHIDEventCallback, void *, void *);
 void IOHIDEventSystemClientRegisterDeviceMatchingCallback(IOHIDEventSystemClientRef, IOHIDServicesRemovedCallback, void *, const char *);
 char * IOHIDEventSystemClientGetTypeString(IOHIDEventSystemClientType);
+CFArrayRef IOHIDEventSystemClientCopyServices(IOHIDEventSystemClientRef);
 CFArrayRef _IOHIDEventSystemClientCopyClientDescriptions(IOHIDEventSystemClientRef, IOHIDEventSystemClientType);
 CFArrayRef _IOHIDEventSystemClientCopyServiceDescriptions(IOHIDEventSystemClientRef);
 
